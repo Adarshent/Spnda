@@ -209,7 +209,7 @@ Confident Mode Collapse is likely an artifact of RLHF fine-tuning, which rewards
 
 We have presented a systematic multi-scale evaluation of Spanda ($R_{sc}$), a zero-cost exact-match entropy metric for epistemic uncertainty quantification in LLMs. Our work reveals a \textbf{two-phase scaling law}: as model capacity grows from 1.5B to 27B, generation syntax converges sufficiently that cheap lexical clustering replaces expensive neural NLI---but at the extreme frontier (120B), structural over-confidence induces \textit{Confident Mode Collapse}, where hallucinated answers achieve perfect consensus and bypass all self-consistency checks. These findings jointly define when zero-cost uncertainty estimation is safe to deploy and when it is \textit{dangerous}, providing practitioners with a principled framework for high-throughput hallucination filtering in production LLM pipelines.
 
-\paragraph{Reproducibility.} Code, evaluation scripts, and all raw experimental traces are publicly available at \url{https://github.com/Zach-al/Spnda}. The Spanda metric is released as a Python package installable via \texttt{pip install spanda}.
+\paragraph{Reproducibility.} Code, evaluation scripts, and all raw experimental traces are publicly available at \url{https://github.com/Adarshent/Spnda}. The Spanda metric is released as a Python package installable via \texttt{pip install spanda}.
 
 %----------------------------------------------------------------------
 % References

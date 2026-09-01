@@ -19,5 +19,5 @@ classifiers = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/Zach-al/Spnda"
-"Bug Tracker" = "https://github.com/Zach-al/Spnda/issues"
+"Homepage" = "https://github.com/Adarshent/Spnda"
+"Bug Tracker" = "https://github.com/Adarshent/Spnda/issues"
