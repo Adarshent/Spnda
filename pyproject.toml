@@ -42,6 +42,7 @@ classifiers = [
 "Repository" = "https://github.com/Adarshent/Spnda.git"
 "Bug Tracker" = "https://github.com/Adarshent/Spnda/issues"
 "Paper (Zenodo)" = "https://doi.org/10.5281/zenodo.22233648"
+"ORCID" = "https://orcid.org/0009-0005-6038-1356"
 
 [tool.setuptools.packages.find]
 where = ["."]
