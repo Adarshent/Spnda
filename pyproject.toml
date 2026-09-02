@@ -1,23 +1,48 @@
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "spanda"
 version = "0.1.0"
 authors = [
-  { name="Bhupen Nayak", email="bhupennayak@icloud.com" },
+  { name = "Bhupen Nayak", email = "bhupennayak@icloud.com" },
 ]
-description = "Zero-cost epistemic uncertainty estimation for LLMs (90,000x faster than Semantic Entropy)"
+description = "Zero-cost epistemic uncertainty quantification and hallucination detection for LLMs (90,000x faster than Semantic Entropy)"
 readme = "README.md"
-requires-python = ">=3.7"
+license = { text = "MIT" }
+requires-python = ">=3.8"
+keywords = [
+  "llm",
+  "hallucination-detection",
+  "semantic-entropy",
+  "epistemic-uncertainty",
+  "ai-safety",
+  "self-consistency",
+  "nlp",
+  "reasoning"
+]
 classifiers = [
-    "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
-    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Science/Research",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Operating System :: OS Independent",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
 
 [project.urls]
 "Homepage" = "https://github.com/Adarshent/Spnda"
+"Repository" = "https://github.com/Adarshent/Spnda.git"
 "Bug Tracker" = "https://github.com/Adarshent/Spnda/issues"
+"Paper (Zenodo)" = "https://doi.org/10.5281/zenodo.22233648"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["spanda*"]

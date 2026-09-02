@@ -1,63 +1,183 @@
-# Spanda ($R_{sc}$)
+<div align="center">
 
-> **Zero-Cost Epistemic Uncertainty Estimation for Large Language Models**
+# ⚡ Spanda ($R_{sc}$)
+### Zero-Cost Epistemic Uncertainty Quantification for Large Language Models
 
-Spanda is a Python package for detecting LLM hallucinations using exact-match normalized entropy ($R_{sc}$). It is designed to be a **zero-parameter, zero-latency** alternative to neural Semantic Entropy. 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22233648.svg)](https://doi.org/10.5281/zenodo.22233648)
+[![Zero Dependencies](https://img.shields.io/badge/dependencies-zero-brightgreen.svg)](#)
+[![Tests Passing](https://img.shields.io/badge/tests-passing-brightgreen.svg)](#)
 
-For reasoning tasks on 7B-27B models, Spanda matches or exceeds the AUROC of $O(K^2)$ DeBERTa-v3 cross-encoders while running **90,000$\times$ faster** (microseconds instead of milliseconds) and requiring zero GPUs.
+*Detect LLM hallucinations and quantify uncertainty in microseconds without secondary NLI cross-encoders.*
 
-📖 **Paper:** [Spanda: Zero-Cost Lexical Entropy Matches Neural Semantic Uncertainty—Until Frontier Models Break It](https://arxiv.org/abs/2608.xxxxx)
+---
 
-## 🚀 Installation
+</div>
+
+## 📌 Overview
+
+Traditional epistemic uncertainty estimation in LLMs relies on **Semantic Entropy (SE)** ([Kuhn et al., 2023](https://arxiv.org/abs/2302.09664); [Farquhar et al., Nature 2024](https://www.nature.com/articles/s41586-024-07421-0)). While effective, Semantic Entropy requires clustering $K$ sampled generation paths using pairwise bidirectional NLI entailment classifiers (e.g., DeBERTa-v3-base). 
+
+This introduces two severe production bottlenecks:
+1. **Quadratic Cost:** $\binom{K}{2}$ forward passes per query (45 neural evaluations for $K=10$).
+2. **Serving Latency:** Adds $\sim$90 ms of GPU overhead per inference call, making it unusable for high-throughput production serving.
+
+**Spanda** introduces **Exact-Match Normalized Entropy ($R_{sc}$)**: a zero-parameter, zero-GPU metric that computes uncertainty directly over deterministic lexical clusters. 
+
+Across empirical evaluations spanning two orders of magnitude (**1.5B to 120B parameters**), Spanda matches or exceeds neural Semantic Entropy on structured reasoning while operating **~90,000$\times$ faster** ($< 1\,\mu\text{s}$ vs. $92.4\,\text{ms}$).
+
+---
+
+## 🔬 Key Empirical Discoveries
+
+### 1. The Coherence Scaling Law
+As model capacity increases from 1.5B to 27B parameters, internal reasoning coherence causes correct predictions to naturally converge to identical lexical sequences. On mathematical reasoning (**GSM8K**), exact-match AUROC scales monotonically:
+
+$$\text{AUROC}_{\text{GSM8K}}: \underbrace{0.577}_{\text{1.5B}} \longrightarrow \underbrace{0.706}_{\text{7B}} \longrightarrow \mathbf{\underbrace{0.889}_{\text{27B}}} \quad (p = 1.89 \times 10^{-28})$$
+
+At **7B+ parameters**, Spanda achieves the exact same discriminative power as heavy DeBERTa-v3 NLI cross-encoders, rendering the neural clustering step redundant for reasoning.
+
+### 2. Confident Mode Collapse (Safety Warning)
+At the **120B frontier scale** on ungrounded factual recall (TriviaQA), the model exhibits **Confident Mode Collapse**: its parametric memory and RLHF tuning cause it to hallucinate the *exact same incorrect answer* identically across all $K$ paths. This yields an **inverted AUROC of 0.091** ($d = -2.23, p = 8.28 \times 10^{-15}$).
+
+> ⚠️ **Critical Safety Implication:** Any system using self-consistency or agreement as a proxy for truth will be systematically deceived by frontier models on ungrounded factual recall. External grounding (RAG) is mandatory in this regime.
+
+---
+
+## 📊 Benchmark Results
+
+| Model Scale | Benchmark | Accuracy | Spanda ($R_{sc}$) AUROC | Neural SE AUROC | Latency | GPU Req. |
+| :--- | :--- | :---: | :---: | :---: | :---: | :---: |
+| **Qwen-1.5B** | GSM8K | 11.4% | 0.577 | **0.584** | $<1\,\mu\text{s}$ | None |
+| **Qwen-1.5B** | TriviaQA | 32.0% | 0.797 | **0.801** | $<1\,\mu\text{s}$ | None |
+| **Mistral-7B** | GSM8K | 8.2% | **0.706** | 0.705 | $<1\,\mu\text{s}$ | None |
+| **Mistral-7B** | TriviaQA | 45.0% | 0.698 | **0.755** | $<1\,\mu\text{s}$ | None |
+| **Qwen-27B** | GSM8K | 61.2% | **0.889** | --- | $<1\,\mu\text{s}$ | None |
+| **DeBERTa Baseline** | *N/A* | --- | --- | --- | **$\sim$92.4 ms** | Required |
+
+---
+
+## 📐 Mathematical Formulation
+
+Given $K$ sampled final answers $\{y_1, \dots, y_K\}$ for prompt $x$, deterministic normalization partitions them into $n$ equivalence classes $\{C_1, \dots, C_n\}$ with empirical probabilities $w_i = \frac{|C_i|}{K}$.
+
+The **Normalized Shannon Entropy** is:
+$$H_{\text{norm}} = \begin{cases} 0 & \text{if } n = 1 \\ \displaystyle\frac{-\sum_{i=1}^n w_i \ln w_i}{\ln K} & \text{if } n > 1 \end{cases}$$
+
+The combined **Spanda Risk Score ($R_{sc}$)** balances entropy dispersion with modal dominance ($w_{\max} = \max_i w_i$):
+$$R_{sc} = \alpha \cdot H_{\text{norm}} + (1 - \alpha) \cdot (1 - w_{\max}), \quad \alpha = 0.5$$
+
+- $R_{sc} = 0$: Complete consensus (model is confident).
+- $R_{sc} \to 1$: Maximum epistemic divergence (model is guessing / hallucinating).
+
+---
+
+## ⚡ Installation
+
+Spanda is lightweight and requires **zero third-party dependencies** (pure Python standard library).
 
 ```bash
 pip install spanda
 ```
 
-## 💻 Quick Start
+Or install from source:
 
-To quantify uncertainty, simply sample $K$ multiple paths from your LLM (e.g., at temperature $T=0.7$) and pass them to Spanda.
-
-```python
-from spanda import compute_rsc, detect_hallucination
-
-# 1. The model is highly confident (High consensus)
-confident_answers = ["Paris", "paris.", "Paris", "Paris", "Paris"]
-result = compute_rsc(confident_answers)
-print(f"Confident R_sc: {result['rsc']}")  # Output: 0.0
-
-
-# 2. The model is guessing/hallucinating (High entropy)
-uncertain_answers = ["Berlin", "Madrid", "Rome", "London", "Paris"]
-result = compute_rsc(uncertain_answers)
-print(f"Uncertain R_sc: {result['rsc']}")  # Output: 0.9
-
-
-# 3. Use the convenience detector
-is_hallucinating = detect_hallucination(uncertain_answers, threshold=0.3)
-if is_hallucinating['is_uncertain']:
-    print("Warning: Model is likely hallucinating. Route to human or RAG.")
+```bash
+git clone https://github.com/Adarshent/Spnda.git
+cd Spnda
+pip install -e .
 ```
 
-## ⚠️ The Operational Envelope (Safety Warning)
+---
 
-Please read the paper before deploying this in production. Spanda establishes a **Coherence Scaling Law**, showing that $R_{sc}$ becomes highly reliable for math and reasoning on modern 7B and 27B models.
+## 🚀 Quick Start
 
-However, our research also discovered **Confident Mode Collapse**: On frontier models (>100B parameters) executing factual recall, the model's RLHF tuning causes it to hallucinate the *exact same incorrect answer* 100% of the time, bypassing self-consistency checks. 
+### 1. Basic Uncertainty Quantification
+```python
+from spanda import compute_rsc
 
-**Rule of Thumb:**
-- ✅ **DO USE** Spanda for math, code, and structured QA on 7B to 70B models.
-- ❌ **DO NOT USE** Spanda (or any self-consistency method) to verify ungrounded trivia/facts on frontier models like GPT-4 or 120B+ architectures without external RAG.
+# High-consensus query (Model is confident)
+samples_confident = ["Paris", "paris.", "Paris", "Paris", "Paris"]
+res_conf = compute_rsc(samples_confident)
 
-## Citation
+print(f"R_sc Score: {res_conf['rsc']}")  # 0.0
+print(f"Dominant Answer: {res_conf['dominant_answer']}")  # 'Paris'
 
-If you use Spanda in your research, please cite our paper:
+# Uncertain / guessing query (Model is hallucinating)
+samples_uncertain = ["Berlin", "Rome", "Madrid", "London", "Paris"]
+res_unc = compute_rsc(samples_uncertain)
+
+print(f"R_sc Score: {res_unc['rsc']}")  # 0.9 (High risk!)
+```
+
+### 2. Hallucination Detection Guardrail
+```python
+from spanda import detect_hallucination
+
+samples = ["42", "42", "24", "17", "99"]
+guard = detect_hallucination(samples, threshold=0.35)
+
+if guard["is_uncertain"]:
+    print(f"🚨 Hallucination Warning (R_sc = {guard['rsc']}). Routing to RAG / Human Review.")
+else:
+    print(f"✅ Safe output: {guard['dominant_answer']}")
+```
+
+### 3. High-Throughput Batch Processing
+```python
+from spanda import batch_compute_rsc
+
+batch = [
+    ["Answer A", "Answer A", "Answer A"],
+    ["Choice 1", "Choice 2", "Choice 3"]
+]
+
+results = batch_compute_rsc(batch)
+for r in results:
+    print(r["rsc"], r["dominant_answer"])
+```
+
+---
+
+## 🛡️ Operational Envelope
+
+| Use Case / Architecture | Recommendation | Rationale |
+| :--- | :---: | :--- |
+| **Math, Code & Structured QA (7B–70B)** | ✅ **Recommended** | Coherence Scaling Law ensures exact-match matches neural SE at 0 cost. |
+| **High-Throughput Production APIs** | ✅ **Recommended** | 90,000x latency reduction without GPU requirements. |
+| **Free-form Paraphrase QA (<7B)** | ⚠️ **Use Neural SE** | Small models produce inconsistent surface phrasing. |
+| **Ungrounded Facts on Frontier Models (>100B)** | ❌ **Do Not Use Alone** | Subject to **Confident Mode Collapse**; must combine with retrieval (RAG). |
+
+---
+
+## 🧪 Testing
+
+Run the test suite:
+
+```bash
+python3 -m unittest discover tests
+```
+
+---
+
+## 📄 Citation
+
+If you use Spanda in your research or production systems, please cite:
 
 ```bibtex
 @article{nayak2026spanda,
   title={Spanda: Zero-Cost Lexical Entropy Matches Neural Semantic Uncertainty---Until Frontier Models Break It},
   author={Nayak, Bhupen},
-  journal={arXiv preprint arXiv:2608.xxxxx},
-  year={2026}
+  journal={arXiv preprint},
+  year={2026},
+  doi={10.5281/zenodo.22233648},
+  url={https://doi.org/10.5281/zenodo.22233648}
 }
 ```
+
+---
+
+## 📜 License
+
+This project is licensed under the [MIT License](LICENSE) - see the LICENSE file for details.
