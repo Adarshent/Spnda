@@ -139,6 +139,41 @@ for r in results:
     print(r["rsc"], r["dominant_answer"])
 ```
 
+### 4. Enterprise Cascaded Guardrail (RAG & Autonomous Agents)
+
+For mission-critical production pipelines, Spanda provides a **2-Tier Cascaded Guardrail** that combines sub-millisecond consensus filtering with context grounding and tool-call safety:
+
+```python
+from spanda import CascadedGuardrail
+
+guard = CascadedGuardrail(
+    uncertainty_threshold=0.3,
+    grounding_threshold=0.15
+)
+
+# 1. RAG Query with Mode Collapse Protection
+rag_context = "Documentation: The production cluster runs in us-east-1."
+unanimous_hallucination = ["eu-west-3 Paris", "eu-west-3 Paris", "eu-west-3 Paris"]
+
+receipt = guard.evaluate(unanimous_hallucination, context=rag_context)
+print(receipt.decision)       # 'MODE_COLLAPSE_RISK'
+print(receipt.is_safe)        # False (Unanimous agreement, but 0% grounded in source!)
+print(receipt.tier_executed)  # Tier 2
+print(receipt.latency_ms)     # < 0.05 ms
+
+# 2. Agent Tool Call Argument Verification (e.g. preventing bad 'rm')
+tool_calls = [
+    {"command": "rm -rf /var/cache"},
+    {"command": "rm -rf /var/log"},  # Conflict detected across parallel paths!
+]
+agent_receipt = guard.evaluate_tool_calls(tool_calls)
+print(agent_receipt.decision) # 'TOOL_ARG_MISMATCH' (Execution blocked!)
+
+# 3. Export SOC2 Audit Receipt
+import json
+print(json.dumps(receipt.to_dict(), indent=2))
+```
+
 ---
 
 ## 🛡️ Operational Envelope

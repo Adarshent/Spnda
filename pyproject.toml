@@ -4,23 +4,26 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "spanda"
-version = "0.1.0"
+version = "0.2.0"
 authors = [
   { name = "Bhupen Nayak", email = "bhupennayak@icloud.com" },
+  { name = "BRHMN Labs Private Limited" },
 ]
-description = "Zero-cost epistemic uncertainty quantification and hallucination detection for LLMs (90,000x faster than Semantic Entropy)"
+description = "Zero-cost epistemic uncertainty quantification & enterprise cascaded guardrails for LLMs"
 readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.8"
 keywords = [
   "llm",
   "hallucination-detection",
+  "guardrails",
   "semantic-entropy",
   "epistemic-uncertainty",
   "ai-safety",
   "self-consistency",
-  "nlp",
-  "reasoning"
+  "rag",
+  "agents",
+  "tool-calling"
 ]
 classifiers = [
   "Development Status :: 4 - Beta",
