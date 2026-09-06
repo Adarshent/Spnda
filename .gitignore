@@ -7,3 +7,4 @@ build/
 .eggs/
 *.egg
 .DS_Store
+.venv/
