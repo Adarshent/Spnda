@@ -2,7 +2,7 @@
 
 # ⚡ Spanda ($R_{sc}$)
 ### Zero-Cost Epistemic Uncertainty Quantification for Large Language Models
-
+[![PyPI](https://img.shields.io/pypi/v/spnda.svg?color=blue)](https://pypi.org/project/spnda/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22233648.svg)](https://doi.org/10.5281/zenodo.22233648)
@@ -79,8 +79,10 @@ $$R_{sc} = \alpha \cdot H_{\text{norm}} + (1 - \alpha) \cdot (1 - w_{\max}), \qu
 Spanda is lightweight and requires **zero third-party dependencies** (pure Python standard library).
 
 ```bash
-pip install spanda
+pip install spnda
 ```
+
+*(Package name on PyPI is `spnda`; module is imported in Python as `import spanda`)*
 
 Or install from source:
 
