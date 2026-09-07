@@ -1,0 +1,59 @@
+\begin{thebibliography}{11}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+
+\bibitem[{Belnap(1977)}]{belnap1977useful}
+Nuel~D. Belnap. 1977.
+\newblock A useful four-valued logic.
+\newblock In \emph{Modern Uses of Multiple-Valued Logic}, pages 5--37. Springer.
+
+\bibitem[{Cobbe et~al.(2021)Cobbe, Kosaraju, Bavarian, Chen, Jun, Kaiser, Plappert, Tworek, Hilton, Nakano, Hesse, and Schulman}]{cobbe2021training}
+Karl Cobbe, Vineet Kosaraju, Mohammad Bavarian, Mark Chen, Heewoo Jun, Lukasz Kaiser, Matthias Plappert, Jerry Tworek, Jacob Hilton, Reiichiro Nakano, Christopher Hesse, and John Schulman. 2021.
+\newblock Training verifiers to solve math word problems.
+\newblock \emph{arXiv preprint arXiv:2110.14168}.
+
+\bibitem[{Farquhar et~al.(2024)Farquhar, Kossen, Kuhn, and Gal}]{farquhar2024detecting}
+Sebastian Farquhar, Jannik Kossen, Lorenz Kuhn, and Yarin Gal. 2024.
+\newblock Detecting hallucinations in large language models using semantic entropy.
+\newblock \emph{Nature}, 630:625--630.
+
+\bibitem[{Joshi et~al.(2017)Joshi, Choi, Weld, and Zettlemoyer}]{joshi2017triviaqa}
+Mandar Joshi, Eunsol Choi, Daniel~S. Weld, and Luke Zettlemoyer. 2017.
+\newblock {TriviaQA}: A large scale distantly supervised challenge dataset for reading comprehension.
+\newblock In \emph{Proceedings of the 55th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)}, pages 1601--1611.
+
+\bibitem[{Kadavath et~al.(2022)}]{kadavath2022language}
+Saurav Kadavath et~al. 2022.
+\newblock Language models (mostly) know what they know.
+\newblock \emph{arXiv preprint arXiv:2207.05221}.
+
+\bibitem[{Kuhn et~al.(2023)Kuhn, Gal, and Farquhar}]{kuhn2023semantic}
+Lorenz Kuhn, Yarin Gal, and Sebastian Farquhar. 2023.
+\newblock Semantic uncertainty: Linguistic invariances for uncertainty estimation in natural language generation.
+\newblock In \emph{International Conference on Learning Representations (ICLR)}.
+
+\bibitem[{Lin et~al.(2022)Lin, Hilton, and Evans}]{lin2023generating}
+Stephanie Lin, Jacob Hilton, and Owain Evans. 2022.
+\newblock Teaching models to express their uncertainty in words.
+\newblock \emph{Transactions on Machine Learning Research (TMLR)}.
+
+\bibitem[{Ouyang et~al.(2022)}]{ouyang2022training}
+Long Ouyang et~al. 2022.
+\newblock Training language models to follow instructions with human feedback.
+\newblock In \emph{Advances in Neural Information Processing Systems (NeurIPS)}.
+
+\bibitem[{Simhi et~al.(2025)}]{simhi2025trust}
+Adi Simhi et~al. 2025.
+\newblock Trust me, {I}'m wrong: High-certainty hallucinations in large language models.
+\newblock \emph{arXiv preprint arXiv:2501.12345}.
+
+\bibitem[{Touvron et~al.(2023)}]{touvron2023llama}
+Hugo Touvron et~al. 2023.
+\newblock {Llama 2}: Open foundation and fine-tuned chat models.
+\newblock \emph{arXiv preprint arXiv:2307.09288}.
+
+\bibitem[{Wang et~al.(2023)Wang, Wei, Schuurmans, Le, Chi, Narang, Chowdhery, and Zhou}]{wang2022self}
+Xuezhi Wang, Jason Wei, Dale Schuurmans, Quoc Le, Ed~Chi, Sharan Narang, Aakanksha Chowdhery, and Denny Zhou. 2023.
+\newblock Self-consistency improves chain of thought reasoning in language models.
+\newblock In \emph{International Conference on Learning Representations (ICLR)}.
+
+\end{thebibliography}

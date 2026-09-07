@@ -142,7 +142,7 @@ Mistral-7B & GSM8K & 1{,}319 & 8.2\% & \textbf{0.706} & 0.705 & 0.88 & 0.180 & $
 Mistral-7B & TriviaQA & 500 & 45.0\% & 0.698 & \textbf{0.755} & 0.70 & 0.216 & $1.1 \times 10^{-12}$ \\
 \midrule
 \multicolumn{9}{l}{\textit{Frontier Scale (27B--120B parameters)}} \\
-Qwen-27B & GSM8K & 250 & 61.2\% & \textbf{0.889} & --- & \textbf{1.43} & 0.346 & $\mathbf{1.89 \times 10^{-28}}$ \\
+Qwen-27B & GSM8K & 250 & 61.2\% & \textbf{0.889} & --- & \textbf{1.43} & 0.346 & $\mathbf{1.89} \times \mathbf{10^{-28}}$ \\
 Qwen-27B$^*$ & TriviaQA & 250 & 4.8\% & 0.344$^*$ & --- & $-$0.62 & $-$0.219 & $4.69 \times 10^{-2}$ \\
 GPT-120B$^*$ & GSM8K & 250 & 92.8\% & 0.696$^*$ & --- & 1.58 & 0.251 & $5.40 \times 10^{-3}$ \\
 GPT-120B$^*$ & TriviaQA & 250 & 10.4\% & 0.091$^*$ & --- & $-$2.23 & $-$0.467 & $8.28 \times 10^{-15}$ \\
@@ -197,7 +197,7 @@ For $K=10$ samples, NLI SE requires $\binom{10}{2} = 45$ DeBERTa-v3 forward pass
 
 \subsection{Operational Envelope: The 2-Tier Cascaded Guardrail}
 
-Rather than framing exact-match and neural NLI as mutually exclusive alternatives, our empirical findings define a principled **2-Tier Cascaded Guardrail** architecture for production inference:
+Rather than framing exact-match and neural NLI as mutually exclusive alternatives, our empirical findings define a principled \textbf{2-Tier Cascaded Guardrail} architecture for production inference:
 
 \begin{itemize}
     \item \textbf{Tier 1: Fast-Path Lexical Pre-Filter.} For structured reasoning, code, mathematical problem solving (GSM8K), database queries (SQL), agent tool-call arguments, and canonical entity extraction on models in the \textbf{7B--27B range}, Spanda ($R_{sc}$) serves as an instantaneous ($< 1.5\ \mu$s) pre-filter. Coherence scaling guarantees that exact-match entropy matches neural SE discriminative accuracy at zero GPU cost.
@@ -226,65 +226,6 @@ We have presented a systematic multi-scale evaluation of Spanda ($R_{sc}$), a ze
 \paragraph{Reproducibility.} All source code, the official \texttt{spnda} distribution, evaluation notebooks, and raw multi-path generation logs across all four model scales are openly accessible at \url{https://doi.org/10.5281/zenodo.22233648} and \url{https://github.com/Adarshent/Spnda}.
 
 %----------------------------------------------------------------------
-% References
-%----------------------------------------------------------------------
-\begin{thebibliography}{10}
-
-\bibitem{kuhn2023semantic}
-Kuhn, L., Gal, Y., and Farquhar, S.
-\newblock Semantic uncertainty: Linguistic invariances for uncertainty estimation in natural language generation.
-\newblock In \textit{International Conference on Learning Representations (ICLR)}, 2023.
-
-\bibitem{wang2022self}
-Wang, X., Wei, J., Schuurmans, D., Le, Q., Chi, E., Narang, S., Chowdhery, A., and Zhou, D.
-\newblock Self-consistency improves chain of thought reasoning in language models.
-\newblock In \textit{International Conference on Learning Representations (ICLR)}, 2023.
-
-\bibitem{farquhar2024detecting}
-Farquhar, S., Kossen, J., Kuhn, L., and Gal, Y.
-\newblock Detecting hallucinations in large language models using semantic entropy.
-\newblock \textit{Nature}, 630:625--630, 2024.
-
-\bibitem{simhi2025trust}
-Simhi, A., et al.
-\newblock Trust me, I'm wrong: High-certainty hallucinations in large language models.
-\newblock \textit{arXiv preprint arXiv:2501.12345}, 2025.
-
-\bibitem{kadavath2022language}
-Kadavath, S., et al.
-\newblock Language models (mostly) know what they know.
-\newblock \textit{arXiv preprint arXiv:2207.05221}, 2022.
-
-\bibitem{lin2023generating}
-Lin, S., Hilton, J., and Evans, O.
-\newblock Teaching models to express their uncertainty in words.
-\newblock \textit{Transactions on Machine Learning Research (TMLR)}, 2022.
-
-\bibitem{cobbe2021training}
-Cobbe, K., Kosaraju, V., Bavarian, M., Chen, M., Jun, H., Kaiser, L., Plappert, M., Tworek, J., Hilton, J., Nakano, R., Hesse, C., and Schulman, J.
-\newblock Training verifiers to solve math word problems.
-\newblock \textit{arXiv preprint arXiv:2110.14168}, 2021.
-
-\bibitem{joshi2017triviaqa}
-Joshi, M., Choi, E., Weld, D., and Zettlemoyer, L.
-\newblock TriviaQA: A large scale distantly supervised challenge dataset for reading comprehension.
-\newblock In \textit{Proceedings of ACL}, 2017.
-
-\bibitem{belnap1977useful}
-Belnap, N.~D.
-\newblock A useful four-valued logic.
-\newblock In \textit{Modern Uses of Multiple-Valued Logic}, Springer, 1977.
-
-\bibitem{ouyang2022training}
-Ouyang, L., et al.
-\newblock Training language models to follow instructions with human feedback.
-\newblock In \textit{Advances in Neural Information Processing Systems (NeurIPS)}, 2022.
-
-\bibitem{touvron2023llama}
-Touvron, H., et al.
-\newblock Llama 2: Open foundation and fine-tuned chat models.
-\newblock \textit{arXiv preprint arXiv:2307.09288}, 2023.
-
-\end{thebibliography}
+\bibliography{custom}
 
 \end{document}
