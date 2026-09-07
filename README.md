@@ -176,6 +176,61 @@ import json
 print(json.dumps(receipt.to_dict(), indent=2))
 ```
 
+### 5. LangChain & LlamaIndex Integration
+
+Spanda plugs directly into modern LLM orchestration pipelines with zero external dependencies:
+
+```python
+# LangChain String Evaluator
+from spanda.integrations.langchain import SpandaStringEvaluator
+
+evaluator = SpandaStringEvaluator(uncertainty_threshold=0.35)
+result = evaluator.evaluate_strings(
+    prediction=["Paris", "Paris", "Paris", "Paris"],
+    context="Paris is the capital of France."
+)
+print(result["value"])  # 'PASS' (Score: 0.0)
+
+# LlamaIndex Response Guardrail
+from spanda.integrations.llamaindex import SpandaRAGGuardrail
+
+guard = SpandaRAGGuardrail()
+receipt = guard.validate_response(
+    samples=["Result A", "Result A", "Result A"],
+    context_str="Retrieved node knowledge..."
+)
+print(receipt.is_safe)  # True
+```
+
+### 6. Drop-in OpenAI-Compatible Gateway Proxy
+
+Inject sub-millisecond guardrails into any existing application without changing a single line of application logic:
+
+```bash
+# Start the Spanda Gateway (point upstream to OpenAI, Groq, vLLM, or Ollama)
+spanda-gateway --upstream https://api.openai.com/v1 --port 8080
+```
+
+In your client application, simply change `base_url`:
+
+```python
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="http://localhost:8080/v1",  # Spanda reverse proxy
+    api_key="sk-..."
+)
+
+# Every completion now returns SOC2 guardrail headers:
+# X-Spanda-Rsc: 0.0412
+# X-Spanda-Safe: true
+# X-Spanda-Latency-Ms: 0.043
+response = client.chat.completions.create(
+    model="gpt-4o",
+    messages=[{"role": "user", "content": "Explain quantum computing in 1 sentence."}],
+)
+```
+
 ---
 
 ## 🛡️ Operational Envelope

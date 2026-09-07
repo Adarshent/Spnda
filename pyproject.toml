@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "spnda"
-version = "0.2.0"
+version = "0.2.1"
 authors = [
   { name = "Bhupen Nayak", email = "bhupennayak@icloud.com" },
   { name = "BRHMN Labs Private Limited" },
@@ -46,6 +46,9 @@ classifiers = [
 "Bug Tracker" = "https://github.com/Adarshent/Spnda/issues"
 "Paper (Zenodo)" = "https://doi.org/10.5281/zenodo.22233648"
 "ORCID" = "https://orcid.org/0009-0005-6038-1356"
+
+[project.scripts]
+spanda-gateway = "spanda.gateway:main"
 
 [tool.setuptools.packages.find]
 where = ["."]

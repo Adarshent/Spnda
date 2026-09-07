@@ -80,9 +80,10 @@ class CascadedGuardrail:
 
     def evaluate(
         self,
-        sampled_responses: List[str],
+        sampled_responses: Optional[List[str]] = None,
         context: Optional[str] = None,
         is_critical: bool = False,
+        samples: Optional[List[str]] = None,
     ) -> AuditReceipt:
         """
         Evaluates K sampled generation paths through the cascaded guardrail.
@@ -97,8 +98,9 @@ class CascadedGuardrail:
         """
         start_time = time.perf_counter()
 
+        sampled_responses = sampled_responses or samples
         if not sampled_responses:
-            raise ValueError("sampled_responses cannot be empty.")
+            raise ValueError("sampled_responses (or samples) cannot be empty.")
 
         # --- Tier 1: Fast Path Lexical Consensus (< 1.5ms) ---
         res = compute_rsc(sampled_responses)

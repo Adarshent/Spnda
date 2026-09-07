@@ -19,7 +19,7 @@ Usage:
     >>> print(receipt)
 """
 
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 __author__ = "Bhupen Nayak"
 __email__ = "bhupennayak@icloud.com"
 
@@ -33,6 +33,12 @@ from spanda.guardrails import (
     CascadedGuardrail,
     AuditReceipt,
 )
+from spanda.integrations import (
+    SpandaStringEvaluator,
+    SpandaGuardrailRunnable,
+    SpandaRAGGuardrail,
+)
+from spanda.gateway import run_gateway
 
 __all__ = [
     "compute_rsc",
@@ -41,4 +47,8 @@ __all__ = [
     "batch_compute_rsc",
     "CascadedGuardrail",
     "AuditReceipt",
+    "SpandaStringEvaluator",
+    "SpandaGuardrailRunnable",
+    "SpandaRAGGuardrail",
+    "run_gateway",
 ]
