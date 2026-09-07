@@ -6,9 +6,33 @@ class TestSpandaCore(unittest.TestCase):
 
     def test_normalize_answer(self):
         self.assertEqual(normalize_answer("  Paris! "), "paris")
-        self.assertEqual(normalize_answer("42.0"), "420")  # strips punctuation
-        self.assertEqual(normalize_answer("The Answer is: 100"), "the answer is 100")
+        self.assertEqual(normalize_answer("42.0"), "42")  # Canonical float to int
+        self.assertEqual(normalize_answer("The Answer is: 100"), "100")  # Prefix stripped
+        self.assertEqual(normalize_answer("forty-two"), "42")  # Number words
+        self.assertEqual(normalize_answer("$42"), "42")  # Currency stripped
         self.assertEqual(normalize_answer(12345), "12345")
+        self.assertEqual(normalize_answer("42.0", canonicalize=False), "420")  # Raw mode
+
+    def test_claude_sonnet_numeric_equivalence(self):
+        # Case from Claude Sonnet review
+        answers = ["42", "42.0", "The answer is 42", "forty-two", "42"]
+        res = compute_rsc(answers)
+        self.assertEqual(res["rsc"], 0.0)
+        self.assertEqual(res["n_clusters"], 1)
+        self.assertEqual(res["dominant_answer"], "42")
+
+    def test_claude_sonnet_polar_agreement(self):
+        # Case from Claude Sonnet review
+        answers = ["Yes, that is correct.", "Yeah that's right", "Correct", "Indeed, yes", "That is true"]
+        res = compute_rsc(answers)
+        self.assertEqual(res["rsc"], 0.0)
+        self.assertEqual(res["n_clusters"], 1)
+
+    def test_cot_extraction(self):
+        answers = ["Therefore #### 42", "\\boxed{42}", "42", "Result: 42"]
+        res = compute_rsc(answers)
+        self.assertEqual(res["rsc"], 0.0)
+        self.assertEqual(res["n_clusters"], 1)
 
     def test_perfect_consensus(self):
         answers = ["Paris", "paris", "Paris!", " PARIS "]

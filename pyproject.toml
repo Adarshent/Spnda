@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "spnda"
-version = "0.2.1"
+version = "0.2.2"
 authors = [
   { name = "Bhupen Nayak", email = "bhupennayak@icloud.com" },
   { name = "BRHMN Labs Private Limited" },
