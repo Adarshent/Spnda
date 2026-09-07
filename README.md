@@ -227,9 +227,11 @@ client = OpenAI(
 # X-Spanda-Latency-Ms: 0.043
 response = client.chat.completions.create(
     model="gpt-4o",
-    messages=[{"role": "user", "content": "Explain quantum computing in 1 sentence."}],
+    messages=[{"role": "user", "content": "Calculate the compound interest on $10,000 at 5% for 3 years."}],
 )
 ```
+
+> ⚠️ **Operational Scope:** Spanda is engineered for **structured reasoning, math, code, agent tool-call arguments, SQL, and canonical factual RAG extraction** where 90ms GPU cross-encoders are an unacceptable bottleneck. It is **not** designed for open-ended, free-form creative prose (e.g., essays or poetry), where synonymous phrasing is naturally diverse and requires heavy neural NLI.
 
 ---
 
