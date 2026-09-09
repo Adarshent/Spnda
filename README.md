@@ -176,12 +176,24 @@ import json
 print(json.dumps(receipt.to_dict(), indent=2))
 ```
 
-### 5. LangChain & LlamaIndex Integration
+### 5. LiteLLM, LangChain & LlamaIndex Integrations
 
-Spanda plugs directly into modern LLM orchestration pipelines with zero external dependencies:
+Spanda plugs directly into modern enterprise LLM orchestration pipelines with zero external dependencies:
 
 ```python
-# LangChain String Evaluator
+# 1. Native LiteLLM Guardrail Callback
+import litellm
+from spanda.integrations.litellm import SpandaLiteLLMGuardrail
+
+litellm.callbacks = [SpandaLiteLLMGuardrail(threshold=0.35, block_mode=False)]
+response = litellm.completion(
+    model="gpt-4o-mini",
+    messages=[{"role": "user", "content": "What is 17 * 19?"}],
+    n=3
+)
+print(response._spanda_receipt)
+
+# 2. LangChain String Evaluator
 from spanda.integrations.langchain import SpandaStringEvaluator
 
 evaluator = SpandaStringEvaluator(uncertainty_threshold=0.35)
@@ -191,7 +203,7 @@ result = evaluator.evaluate_strings(
 )
 print(result["value"])  # 'PASS' (Score: 0.0)
 
-# LlamaIndex Response Guardrail
+# 3. LlamaIndex Response Guardrail
 from spanda.integrations.llamaindex import SpandaRAGGuardrail
 
 guard = SpandaRAGGuardrail()
@@ -202,16 +214,25 @@ receipt = guard.validate_response(
 print(receipt.is_safe)  # True
 ```
 
-### 6. Drop-in OpenAI-Compatible Gateway Proxy
+### 6. Enterprise Reverse Proxy Gateway (`spanda-gateway`)
 
-Inject sub-millisecond guardrails into any existing application without changing a single line of application logic:
+Inject sub-millisecond guardrails into any existing application without changing a single line of application code. Compatible with **OpenAI, Groq, vLLM, Ollama, Together, and Mistral**.
 
+#### Run via CLI:
 ```bash
-# Start the Spanda Gateway (point upstream to OpenAI, Groq, vLLM, or Ollama)
 spanda-gateway --upstream https://api.openai.com/v1 --port 8080
 ```
 
-In your client application, simply change `base_url`:
+#### Run via Docker (Production):
+```bash
+docker run -d -p 8080:8080 \
+  -e SPANDA_UPSTREAM=https://api.openai.com/v1 \
+  -e SPANDA_THRESHOLD=0.35 \
+  brhmn/spanda-gateway
+```
+
+#### Client Configuration:
+Simply point your SDK's `base_url` to the gateway:
 
 ```python
 from openai import OpenAI
@@ -221,15 +242,25 @@ client = OpenAI(
     api_key="sk-..."
 )
 
-# Every completion now returns SOC2 guardrail headers:
+# Every completion automatically returns enterprise telemetry:
+# Headers:
 # X-Spanda-Rsc: 0.0412
 # X-Spanda-Safe: true
+# X-Spanda-Decision: FAST_PASS_CONSISTENT
+# X-Spanda-Mode-Collapse: false
 # X-Spanda-Latency-Ms: 0.043
+# X-Correlation-ID: spn_a83f19bc01da
 response = client.chat.completions.create(
     model="gpt-4o",
     messages=[{"role": "user", "content": "Calculate the compound interest on $10,000 at 5% for 3 years."}],
 )
 ```
+
+#### Enterprise Observability Endpoints:
+- `GET /metrics`: Standard Prometheus exposition format for Grafana dashboards (`spanda_requests_total`, `spanda_evaluations_total`, `spanda_mode_collapses_total`, `spanda_eval_latency_avg_ms`).
+- `GET /healthz`: Kubernetes liveness probe.
+- `GET /readyz`: Kubernetes readiness probe.
+- Structured JSON logging: Every transaction emits a machine-parseable log line to stdout for Datadog / CloudWatch / Splunk.
 
 > ⚠️ **Operational Scope:** Spanda is engineered for **structured reasoning, math, code, agent tool-call arguments, SQL, and canonical factual RAG extraction** where 90ms GPU cross-encoders are an unacceptable bottleneck. It is **not** designed for open-ended, free-form creative prose (e.g., essays or poetry), where synonymous phrasing is naturally diverse and requires heavy neural NLI.
 
