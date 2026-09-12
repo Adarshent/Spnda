@@ -1,0 +1,59 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "spnda"
+version = "0.3.0"
+authors = [
+  { name = "Bhupen Nayak", email = "bhupennayak@icloud.com" },
+  { name = "Spanda Research" },
+]
+description = "Sub-microsecond epistemic uncertainty quantification & high-throughput LLM gateway for AI safety"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.8"
+keywords = [
+  "llm",
+  "hallucination-detection",
+  "guardrails",
+  "semantic-entropy",
+  "epistemic-uncertainty",
+  "ai-safety",
+  "gateway",
+  "proxy",
+  "rust",
+  "rag",
+  "agents",
+  "tool-calling"
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Science/Research",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Operating System :: OS Independent",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/Adarshent/Spnda"
+"Repository" = "https://github.com/Adarshent/Spnda.git"
+"Bug Tracker" = "https://github.com/Adarshent/Spnda/issues"
+"Paper (Zenodo)" = "https://doi.org/10.5281/zenodo.22233648"
+"ORCID" = "https://orcid.org/0009-0005-6038-1356"
+
+[project.scripts]
+spnda = "spanda.cli:main"
+spanda = "spanda.cli:main"
+spanda-gateway = "spanda.gateway:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["spanda*"]

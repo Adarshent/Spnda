@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  spanda-gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: spanda/spanda-gateway:latest
+    container_name: spanda-gateway
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - SPANDA_PORT=8080
+      - SPANDA_UPSTREAM=https://api.openai.com/v1
+      - SPANDA_THRESHOLD=0.35
+      - SPANDA_BLOCK_MODE=0
+      - SPANDA_DEFAULT_K=3
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/healthz')"]
+      interval: 15s
+      timeout: 3s
+      retries: 3

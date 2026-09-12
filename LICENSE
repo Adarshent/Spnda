@@ -1,0 +1,60 @@
+# Spanda Dual License Agreement
+
+Spanda is distributed under a dual-licensing model designed to maximize developer adoption while protecting the core technology against unauthorized commercial reselling:
+
+1. **Part 1 (MIT License):** Applies to the Python client library (`spanda/`), client SDKs, LangChain integrations, and LlamaIndex integrations.
+2. **Part 2 (Business Source License 1.1):** Applies to the compiled Rust engine (`crates/spanda-core/`), standalone reverse-proxy binaries (`spnda`, `spanda-gateway`), and containerized gateway images.
+
+---
+
+## Part 1: Python SDK & Client Integrations (MIT License)
+
+Copyright (c) 2026 Bhupen Nayak, Spanda Research
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+## Part 2: Spanda Core Engine & Gateway Daemon (Business Source License 1.1)
+
+Parameters:
+- **Licensor:** Spanda Research
+- **Licensed Work:** Spanda Core Engine, Gateway Reverse Proxy, and compiled binaries (`crates/spanda-core/`, `spnda`)
+- **Version:** 0.3.0
+- **Change Date:** 2030-01-01
+- **Change License:** Apache License, Version 2.0
+
+### 1. License Grant
+Licensor hereby grants you the right to copy, modify, create derivative works, redistribute, and make non-commercial and internal commercial production use of the Licensed Work.
+
+### 2. Permitted Uses
+You are explicitly permitted to:
+- Run Spanda Core and Spanda Gateway internally within your company or organization to monitor, secure, and gate your own LLM applications and AI agents.
+- Deploy the software on your private infrastructure, Kubernetes clusters, virtual machines, or local development environments.
+- Modify and compile the source code for your internal operational requirements.
+
+### 3. Commercial Use Limitation
+You may NOT use the Licensed Work to provide a commercial, third-party-facing managed service, hosted API gateway, multi-tenant cloud service, or SaaS product that competes directly with Spanda, Spanda Gateway, or Spanda Research commercial offerings, without an express commercial license from Spanda Research.
+
+### 4. Automatic Conversion
+On the Change Date (January 1, 2030), the Licensed Work automatically converts to the Change License (Apache License, Version 2.0) without further action by Licensor or you.
+
+For commercial enterprise licensing, OEM distribution, or hosted service permissions, contact:
+Bhupen Nayak (bhupennayak@icloud.com)
+Spanda Research
